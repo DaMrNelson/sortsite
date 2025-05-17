@@ -1,8 +1,8 @@
-import { Sorter } from ".";
+import { Sorter } from "./base";
 import { next, type SorterUpdateProps } from "../executor";
 
 export class MiracleSort extends Sorter {
-  readonly NAME = "MiracleSort";
+  static readonly NAME = "MiracleSort";
 
   async run() {
     while (true) {

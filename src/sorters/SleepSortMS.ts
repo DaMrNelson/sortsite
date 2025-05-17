@@ -1,9 +1,9 @@
-import { Sorter } from ".";
+import { Sorter } from "./base";
 import { next } from "../executor";
 
 /** Technically ms*10, sorry! */
 export class SleepSortMS extends Sorter {
-  readonly NAME = "SleepSort (MS)";
+  static readonly NAME = "SleepSort (MS)";
 
   async run() {
     while (true) {

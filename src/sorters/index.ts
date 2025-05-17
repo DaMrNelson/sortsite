@@ -1,46 +1,22 @@
-import { ERR_STOP_REQUESTED } from "../executor";
+import type { SorterConstructor } from "./base";
+import BogoSort from "./BogoSort";
+import StalinSort from "./StalinSort";
+import MergeSort from "./MergeSort";
+import BubbleSort from "./BubbleSort";
+import InsertionSort from "./InsertionSort";
+import LiarSort from "./LiarSort";
+import MiracleSort from "./MiracleSort";
+import SleepSort from "./SleepSort";
+import SleepSortMS from "./SleepSortMS";
+import ThanosSort from "./ThanosSort";
+import EndgameSort from "./EndgameSort";
 
-export abstract class Sorter {
-  abstract readonly NAME: string;
-  readonly DESCRIPTION?: string;
-
-  id: symbol;
-  data: number[];
-  /** Highest index reached OK. Each sorter is responsible for setting this. This property is not hooked but is used. // TODO: Probably don't do that lol */
-  record?: number;
-  isRunning: boolean = false;
-  isComplete: boolean = false;
-
-  constructor(data: number[]) {
-    this.id = Symbol(this.constructor.name);
-    this.data = [...data];
-  }
-
-  abstract run(): Promise<void>; // TODO: How to enforce that this is async?
-
-  async start() {
-    this.isRunning = true;
-
-    try {
-      await this.run();
-      this.isComplete = true;
-    } catch (err) {
-      if (err === ERR_STOP_REQUESTED) {
-        console.info("Stopped on user requested. Sorter:", this);
-      } else {
-        console.error("An unexpected error occurred:", err);
-        // TODO: Display error to user
-      }
-    }
-
-    this.isRunning = false;
-  }
-
-  setData(data: number[]) {
-    if (this.isRunning) {
-      console.error("TODO: Run was interrupted and is now untracked! Work around that!");
-    }
-
-    this.data = [...data];
-  }
-}
+export const MEME_SORTS: SorterConstructor[] = [
+  BogoSort, StalinSort, LiarSort, MiracleSort, SleepSort, SleepSortMS, ThanosSort, EndgameSort,
+];
+export const REAL_SORTS: SorterConstructor[] = [
+  MergeSort, BubbleSort, InsertionSort,
+];
+export const INITIAL_SORTS: SorterConstructor[] = [
+  MergeSort, BubbleSort, BogoSort, StalinSort, MiracleSort, InsertionSort,
+];

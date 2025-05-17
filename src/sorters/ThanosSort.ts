@@ -1,8 +1,8 @@
-import { Sorter } from ".";
+import { Sorter } from "./base";
 import { next } from "../executor";
 
 export class ThanosSort extends Sorter {
-  readonly NAME = "ThanosSort";
+  static readonly NAME = "ThanosSort";
   readonly DESCRIPTION = "Check if the list is sorted. If not, remove half the data. Repeat.";
 
   async run() {

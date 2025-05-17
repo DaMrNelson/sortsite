@@ -1,9 +1,9 @@
-import { Sorter } from ".";
+import { Sorter } from "./base";
 import { next } from "../executor";
 
 /** As seen on TikTok */
 export class StalinSort extends Sorter {
-  readonly NAME = "StalinSort";
+  static readonly NAME = "StalinSort";
 
   async run() {
     // Go over list, removing any entries that aren't larger than the intended

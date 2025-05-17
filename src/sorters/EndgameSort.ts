@@ -1,9 +1,9 @@
 
-import { Sorter } from ".";
+import { Sorter } from "./base";
 import { next } from "../executor";
 
 export class EndgameSort extends Sorter {
-  readonly NAME = "EndgameSort";
+  static readonly NAME = "EndgameSort";
   readonly DESCRIPTION = "Check if the list is sorted. If not, snap away half the data. On all future repetitions, if the list is not sorted then snap the missing data back into existence before snapping a new set of random data away.";
 
   async run() {

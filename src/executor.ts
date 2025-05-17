@@ -1,17 +1,7 @@
 import { create, type StoreApi } from "zustand";
-import type { Sorter } from "./sorters";
+import type { Sorter, SorterConstructor } from "./sorters/base";
+import { INITIAL_SORTS } from "./sorters";
 import type { HighlightProps } from "./components/DataDisplay";
-import BogoSort from "./sorters/BogoSort";
-import StalinSort from "./sorters/StalinSort";
-import MergeSort from "./sorters/MergeSort";
-import BubbleSort from "./sorters/BubbleSort";
-import InsertionSort from "./sorters/InsertionSort";
-import LiarSort from "./sorters/LiarSort";
-import MiracleSort from "./sorters/MiracleSort";
-import SleepSort from "./sorters/SleepSort";
-import SleepSortMS from "./sorters/SleepSortMS";
-import ThanosSort from "./sorters/ThanosSort";
-import EndgameSort from "./sorters/EndgameSort";
 //import GameOfSort from "./sorters/GameOfSort";
 
 export const RANDOM_COUNT = 100;
@@ -37,6 +27,7 @@ export type ExecutionState = {
   highlights: { [sorterId: symbol]: HighlightProps | undefined },
   set: StoreApi<ExecutionState>["setState"],
   setData: (data: number[]) => void,
+  toggleSorter: (sorter: SorterConstructor) => void,
 };
 /** DO NOT USE! Never updated, even when data is regenerated. */
 const _initialData = generateData();
@@ -44,20 +35,7 @@ const _initialData = generateData();
 export const useExecutionState = create<ExecutionState>()((set) => ({
   running: false,
   stop: false,
-  sorters: [
-    new BogoSort(_initialData),
-    new StalinSort(_initialData),
-    new MergeSort(_initialData),
-    new BubbleSort(_initialData),
-    new InsertionSort(_initialData),
-    new LiarSort(_initialData),
-    new MiracleSort(_initialData),
-    new SleepSort(_initialData),
-    new SleepSortMS(_initialData),
-    new ThanosSort(_initialData),
-    new EndgameSort(_initialData),
-    //new GameOfSort(_initialData),
-  ],
+  sorters: INITIAL_SORTS.map((SortClass) => new SortClass(_initialData)),
   data: _initialData,
   dataSorted: [..._initialData].sort((a, b) => a - b),
   highlights: {},
@@ -72,7 +50,15 @@ export const useExecutionState = create<ExecutionState>()((set) => ({
       // @ts-ignore
       sorters: state.sorters.map((sorter) => new sorter.constructor(data)),
     }))
-  }
+  },
+  toggleSorter: (SorterClass: SorterConstructor) => {
+    set((state) => ({
+      sorters: state.sorters.find((sorterInst) => sorterInst instanceof SorterClass) ?
+        state.sorters.filter((sorterInst) => !(sorterInst instanceof SorterClass))
+      :
+        [...state.sorters, new SorterClass(state.data)]
+    }))
+  },
 }));
 
 type SorterPromiseAction = "moved" | "check-ok" | "check-bad" | "complete";

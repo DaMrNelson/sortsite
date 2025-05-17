@@ -1,8 +1,8 @@
-import { Sorter } from ".";
+import { Sorter } from "./base";
 import { next } from "../executor";
 
 export class InsertionSort extends Sorter {
-  readonly NAME = "InsertionSort";
+  static readonly NAME = "InsertionSort";
 
   async run() {
     for (let i = 1; i < this.data.length; i++) {

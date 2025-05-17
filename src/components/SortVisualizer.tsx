@@ -1,5 +1,5 @@
 import { useExecutionState } from "../executor";
-import { Sorter } from "../sorters";
+import { Sorter } from "../sorters/base";
 import { DataDisplay, DataDisplayContainer } from "./DataDisplay";
 import styles from "./SortVisualizer.module.css";
 
@@ -13,7 +13,7 @@ export const SortVisualizer = ({ sorter }: { sorter: Sorter }) => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.title}>{sorter.NAME}</div>
+      <div className={styles.title}>{sorter.getName()}</div>
       <DataDisplayContainer>
         {dataSorted && <DataDisplay data={dataSorted} background />}
         <DataDisplay data={sorter.data} record={sorter.record} {...highlightProps} />

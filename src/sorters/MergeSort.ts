@@ -1,9 +1,9 @@
-import { Sorter } from ".";
+import { Sorter } from "./base";
 import { next } from "../executor";
 
 /** As seen on TikTok */
 export class MergeSort extends Sorter {
-  readonly NAME = "MergeSort";
+  static readonly NAME = "MergeSort";
 
   async run() {
     await this.mergeSort(0, this.data.length);
