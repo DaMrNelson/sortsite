@@ -1,11 +1,6 @@
-import { useMemo, useState } from "react";
 import styles from "./App.module.css";
 import { SortVisualizer } from "./components/SortVisualizer";
-import { create, type StoreApi } from "zustand";
-import type { Sorter } from "./sorters";
-import { generateData, startExecution, stopExecution, unhookedExecutionState, useExecutionState } from "./executor";
-import BogoSort from "./sorters/BogoSort";
-import StalinSort from "./sorters/StalinSort";
+import { generateData, startExecution, stopExecution, useExecutionState } from "./executor";
 
 export const App = () => {
   const state = useExecutionState();

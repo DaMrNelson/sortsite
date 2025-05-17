@@ -8,7 +8,7 @@ Sorting visualized.
   - [ ] Think of more!
 - [ ] Real sorts
   - [X] MergeSort
-  - [ ] InsertSort
+  - [X] InsertionSort
   - [ ] SelectSort
   - [X] BubbleSort
   - [ ] QuickSort

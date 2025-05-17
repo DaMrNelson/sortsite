@@ -54,7 +54,8 @@ export const useExecutionState = create<ExecutionState>()((set) => ({
       dataSorted: [...data].sort((a, b) => a - b),
       // TODO: This seems hacky and typescript throws an error,
       //       but I really don't love the idea of hooking around sorter.data.
-      //       Q: Other solutions?
+      //       Q: Other solutions? Ie better mapping, don't replace the class, etc
+      // @ts-ignore
       sorters: state.sorters.map((sorter) => new sorter.constructor(data)),
     }))
   }
