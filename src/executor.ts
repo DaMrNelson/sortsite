@@ -1,10 +1,11 @@
 import { create, type StoreApi } from "zustand";
 import type { Sorter } from "./sorters";
+import type { HighlightProps } from "./components/DataDisplay";
 import BogoSort from "./sorters/BogoSort";
 import StalinSort from "./sorters/StalinSort";
 import MergeSort from "./sorters/MergeSort";
 import BubbleSort from "./sorters/BubbleSort";
-import type { HighlightProps } from "./components/DataDisplay";
+import InsertionSort from "./sorters/InsertionSort";
 
 export const RANDOM_COUNT = 100;
 //export const RANDOM_COUNT = 6;
@@ -12,6 +13,13 @@ export const RANDOM_MIN = 0;
 export const RANDOM_MAX = 100;
 
 export const ERR_STOP_REQUESTED = Symbol("Stop requested");
+
+export const ACTION_COLOR_MAP: Record<SorterPromiseAction, string> = {
+  "check-ok": "#00FF00",
+  "check-bad": "#FF0000",
+  "moved": "#0000FF",
+  "complete": "",
+}
 
 export type ExecutionState = {
   running: boolean,
@@ -34,6 +42,7 @@ export const useExecutionState = create<ExecutionState>()((set) => ({
     new StalinSort(_initialData),
     new MergeSort(_initialData),
     new BubbleSort(_initialData),
+    new InsertionSort(_initialData),
   ],
   data: _initialData,
   dataSorted: [..._initialData].sort((a, b) => a - b),
@@ -134,32 +143,14 @@ export const next = async (sorter: Sorter, action: SorterPromiseAction, actionIn
       // Action highlight (single index)
       ...(action !== undefined ? {
         focusedIndex: actionIndex,
-        focusedColor: (
-          (action === "check-ok") ?
-            "#00FF00"
-          : action === "check-bad" ?
-            "#FF0000"
-          : action === "moved" ?
-            "#0000FF"
-          :
-            ""
-        )
+        focusedColor: ACTION_COLOR_MAP[action],
       } : {}),
 
       // Group highlight (multi-index)
       ...(groupAction !== undefined ? {
         groupIndexStart: groupActionStart,
         groupIndexEnd: groupActionEnd,
-        groupedColor: (
-          groupAction === "check-ok" ?
-            "#00FF00"
-          : groupAction === "check-bad" ?
-            "#FF0000"
-          : groupAction === "moved" ?
-            "#0000FF"
-          :
-            ""
-        )
+        groupedColor: ACTION_COLOR_MAP[groupAction],
       } : {}),
     };
     myPromise = new SorterPromiseWrapper(sorter, highlightProps)
