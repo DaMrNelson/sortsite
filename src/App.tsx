@@ -175,7 +175,7 @@ export const SortCheck = ({ SorterClass }: { SorterClass: SorterConstructor }) =
   return (
     <FormCheck
       id={`check-${name}`}
-      label={name}
+      label={name.replace("Sort", "")}
       checked={selected}
       onChange={() => toggleSorter(SorterClass)}
       disabled={running}
