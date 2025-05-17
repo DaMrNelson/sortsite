@@ -26,10 +26,10 @@ export class StalinSort extends Sorter {
         i += 1;
       }
 
-      await next(this, "check-ok", undefined, "check-ok", 0, i);
+      await next({ sorter: this, action: "check-ok", groupAction: "check-ok", groupActionStart: 0, groupActionEnd: i });
     }
 
-    await next(this, "complete");
+    await next({ sorter: this, action: "complete" });
   }
 }
 

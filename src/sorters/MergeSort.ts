@@ -7,7 +7,7 @@ export class MergeSort extends Sorter {
 
   async run() {
     await this.mergeSort(0, this.data.length);
-    await next(this, "complete");
+    await next({ sorter: this, action: "complete"});
   }
 
   async mergeSort(start: number, end: number) {
@@ -56,7 +56,7 @@ export class MergeSort extends Sorter {
         break;
       }
 
-      await next(this, "check-ok", undefined, "check-ok", start, i + 1);
+      await next({ sorter: this, action: "check-ok", groupAction: "check-ok", groupActionStart: start, groupActionEnd: i + 1 });
       i += 1;
     }
   }

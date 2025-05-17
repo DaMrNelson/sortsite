@@ -1,20 +1,28 @@
 # SortSite
 Sorting visualized.
 - [ ] Meme sorts
-  - [X] BogoSort
-  - [X] StalinSort
-  - [ ] MiracleSort
-  - [ ] LiarSort
-  - [ ] CommunismSort
-  - [ ] CapitalismSort
+  - [X] * BogoSort
+  - [X] * StalinSort
+  - [X] * MiracleSort
+  - [X] * LiarSort
+  - [ ] * CommunismSort
+  - [ ] * CapitalismSort
+  - [ ] FeudalSort
+  - [ ] SnailSort (intentionally horribly slow)
+  - [X] * SleepSort (sleep `n` seconds, then add `n` to the output)
+  - [ ] * EdwardSort (merge all values into each other as one large bar. "Ed-warrdd" - Nina Tucker)
+  - [ ] GameOfSort (hash out an elaborate plot where each element is vying for the top)
+  - [ ] * GPTSort (ask ChatGPT to sort the list)
+  - [ ] * BruteSort (try every combination. Like bogosort but ordered)
+  - [ ] UnSort (make the data as statistically unsorted as possible)
   - [ ] Think of more!
 - [ ] Real sorts
   - [X] MergeSort
   - [X] InsertionSort
-  - [ ] SelectSort
+  - [ ] * SelectSort
   - [X] BubbleSort
-  - [ ] QuickSort
-  - [ ] TimeSort
+  - [ ] * QuickSort
+  - [ ] * TimeSort
 - [ ] Other TODO
   - [ ] Improve back-end algo
   - [ ] Satisfying sounds

@@ -10,11 +10,11 @@ export class InsertionSort extends Sorter {
       while (this.isOk(j)) {
         [this.data[j], this.data[j - 1]] = [this.data[j - 1], this.data[j]];
         j--;
-        await next(this, "moved", i, this.isOk(j) ? "check-bad" : "check-ok", j, j + 1);
+        await next({ sorter: this, action: "moved", actionIndex: i, groupAction: this.isOk(j) ? "check-bad" : "check-ok", groupActionStart: j, groupActionEnd: j + 1 });
       }
     }
 
-    await next(this, "complete");
+    await next({ sorter: this, action: "complete" });
   }
 
   isOk(j: number): boolean {

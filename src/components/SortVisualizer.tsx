@@ -5,15 +5,19 @@ import styles from "./SortVisualizer.module.css";
 
 export const SortVisualizer = ({ sorter }: { sorter: Sorter }) => {
   let highlightProps = useExecutionState((state) => state.highlights[sorter.id]);
-  const dataSorted = useExecutionState((state) => state.dataSorted);
+  let dataSorted = useExecutionState((state) => state.dataSorted);
+
+  if (highlightProps?.dataSortedOverride) {
+    dataSorted = highlightProps.dataSortedOverride;
+  }
 
   return (
     <div className={styles.container}>
       <div className={styles.title}>{sorter.NAME}</div>
       <DataDisplayContainer>
         {dataSorted && <DataDisplay data={dataSorted} background />}
-        {<DataDisplay data={sorter.data} record={sorter.record} {...highlightProps} />}
-  </DataDisplayContainer>
+        <DataDisplay data={sorter.data} record={sorter.record} {...highlightProps} />
+      </DataDisplayContainer>
     </div>
   );
 };

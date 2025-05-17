@@ -12,6 +12,7 @@ export type HighlightProps = {
   groupIndexStart?: number,
   groupIndexEnd?: number,
   groupedColor?: string,
+  dataSortedOverride?: number[],
 }
 
 export const DataDisplay = ({ data, focusedIndex, focusedColor, groupIndexStart, groupIndexEnd, groupedColor, record, background }: { data: number[], record?: number, bgData?: number[], background?: boolean } & HighlightProps) => {

@@ -6,6 +6,10 @@ import StalinSort from "./sorters/StalinSort";
 import MergeSort from "./sorters/MergeSort";
 import BubbleSort from "./sorters/BubbleSort";
 import InsertionSort from "./sorters/InsertionSort";
+import LiarSort from "./sorters/LiarSort";
+import MiracleSort from "./sorters/MiracleSort";
+import SleepSort from "./sorters/SleepSort";
+import SleepSortMS from "./sorters/SleepSortMS";
 
 export const RANDOM_COUNT = 100;
 //export const RANDOM_COUNT = 6;
@@ -43,6 +47,10 @@ export const useExecutionState = create<ExecutionState>()((set) => ({
     new MergeSort(_initialData),
     new BubbleSort(_initialData),
     new InsertionSort(_initialData),
+    new LiarSort(_initialData),
+    new MiracleSort(_initialData),
+    new SleepSort(_initialData),
+    new SleepSortMS(_initialData),
   ],
   data: _initialData,
   dataSorted: [..._initialData].sort((a, b) => a - b),
@@ -62,6 +70,16 @@ export const useExecutionState = create<ExecutionState>()((set) => ({
 }));
 
 type SorterPromiseAction = "moved" | "check-ok" | "check-bad" | "complete";
+
+export type SorterUpdateProps = {
+  sorter: Sorter,
+  action: SorterPromiseAction,
+  actionIndex?: number,
+  groupAction?: SorterPromiseAction,
+  groupActionStart?: number,
+  groupActionEnd?: number,
+  dataSortedOverrideCount?: number,
+}
 
 /** State that should NEVER be tied into React hooks. Frequent updates, persistent objects. */
 export const unhookedExecutionState = {
@@ -120,8 +138,13 @@ class SorterPromiseWrapper {
 
 
 
-export const next = async (sorter: Sorter, action: SorterPromiseAction, actionIndex?: number, groupAction?: SorterPromiseAction, groupActionStart?: number, groupActionEnd?: number) => {
+export const next = async ({ sorter, action, actionIndex, groupAction, groupActionStart, groupActionEnd, dataSortedOverrideCount } : SorterUpdateProps) => {
   let myPromise: SorterPromiseWrapper | null = null;
+
+  const dataSortedOverride = dataSortedOverrideCount !== undefined ?
+    useExecutionState.getState().dataSorted.map((val, i) => i >= dataSortedOverrideCount ? val : 0)
+  :
+    undefined;
 
   // Add to promise wait list or complete
   if (action === "complete") {
@@ -138,6 +161,7 @@ export const next = async (sorter: Sorter, action: SorterPromiseAction, actionIn
         [sorter.id]: {
           groupedColor: ACTION_COLOR_MAP["complete"],
           groupIndexStart: 0,
+          dataSortedOverride,
         }
       }
     }));
@@ -163,6 +187,11 @@ export const next = async (sorter: Sorter, action: SorterPromiseAction, actionIn
         groupIndexEnd: groupActionEnd,
         groupedColor: ACTION_COLOR_MAP[groupAction],
       } : {}),
+
+      // Sorted data override
+      ...(dataSortedOverride !== undefined ? {
+        dataSortedOverride
+      }: {}),
     };
     myPromise = new SorterPromiseWrapper(sorter, highlightProps)
     unhookedExecutionState.waitingPromises.push(myPromise);

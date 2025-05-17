@@ -15,9 +15,9 @@ export class BubbleSort extends Sorter {
         if (this.data[i] > this.data[i + 1]) {
           [this.data[i], this.data[i + 1]] = [this.data[i + 1], this.data[i]];
           swaps += 1;
-          await next(this, "check-bad", i + 1, "check-ok", this.data.length - moved, this.data.length);
+          await next({ sorter: this, action: "check-bad", actionIndex: i + 1, groupAction: "check-ok", groupActionStart: this.data.length - moved, groupActionEnd: this.data.length });
         } else {
-          await next(this, "check-ok", i, "check-ok", this.data.length - moved, this.data.length);
+          await next({ sorter: this, action: "check-ok", actionIndex: i, groupAction: "check-ok", groupActionStart: this.data.length - moved, groupActionEnd: this.data.length });
         }
       }
 
@@ -28,7 +28,7 @@ export class BubbleSort extends Sorter {
       moved += 1;
     }
 
-    await next(this, "complete");
+    await next({ sorter: this, action: "complete" });
   }
 }
 

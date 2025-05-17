@@ -15,22 +15,22 @@ export class BogoSort extends Sorter {
 
         if (val >= lastVal) {
           lastVal = val;
-          await next(this, "check-ok", undefined, "check-ok", 0, i);
+          await next({ sorter: this, action: "check-ok", groupAction: "check-ok", groupActionStart: 0, groupActionEnd: i });
         } else {
           allOk = false;
 
           if (this.record === undefined || i - 1 > this.record) {
-            this.record = i - 1; // TODO: Publish in next()?
+            this.record = i - 1; // TODO: Publish in next() instead!
           }
 
-          await next(this, "check-bad", i, "check-ok", 0, i - 1);
+          await next({ sorter: this, action: "check-bad", actionIndex: i, groupAction: "check-ok", groupActionStart: 0, groupActionEnd: i });
           break;
         }
       }
 
       // If all OK, done!
       if (allOk) {
-        await next(this, "complete");
+        await next({ sorter: this, action: "complete" });
         return;
       }
 
