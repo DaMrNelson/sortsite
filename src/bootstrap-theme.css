@@ -1,0 +1,21 @@
+.btn {
+    border-radius: 0;
+}
+
+.btn.btn-primary {
+    --bs-btn-color: #FFF;
+    --bs-btn-bg: #000;
+    --bs-btn-border-color: #FFF;
+
+    --bs-btn-hover-color: #FFF;
+    --bs-btn-hover-bg: #333;
+    --bs-btn-hover-border-color: #FFF;
+
+    --bs-btn-active-color: #FFF;
+    --bs-btn-active-bg: #555;
+    --bs-btn-active-border-color: #FFF;
+
+    --bs-btn-disabled-color: var(--bs-btn-color);
+    --bs-btn-disabled-bg: var(--bs-btn-bg);
+    --bs-btn-disabled-border-color: var(--bs-btn-border-color);
+}

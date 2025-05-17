@@ -4,6 +4,7 @@
     height: 300px;
     background: #000;
     border: 1px solid #AAA;
+    box-sizing: content-box;
 }
 
 .dbContainer.bg {

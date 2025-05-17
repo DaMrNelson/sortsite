@@ -1,3 +1,4 @@
+import Button from "react-bootstrap/Button";
 import styles from "./App.module.css";
 import { SortVisualizer } from "./components/SortVisualizer";
 import { generateData, startExecution, stopExecution, useExecutionState } from "./executor";
@@ -19,15 +20,19 @@ export const App = () => {
   };
 
   return (
-    <div className={styles.sorter}>
+    <div className={styles.content}>
+      <div className={styles.header}>
+        SORTING ALGORITHMS VISUALIZED
+      </div>
       <div className={styles.controls}>
         { state.running ?
-          <button onClick={ () => onStopClick() } disabled={state.stop}>Stop</button>
+          <Button onClick={ () => onStopClick() } disabled={state.stop}>Stop</Button>
         :
-          <button onClick={ () => onStartClick() }>Start</button>
+          <Button onClick={ () => onStartClick() }>Start</Button>
         }
-        <button onClick={ () => onGenerateDataClick() } disabled={state.running}>Regenerate Data</button>
-        {/* TODO: Speed control */}
+        <Button onClick={ () => onGenerateDataClick() } disabled={state.running}>Regenerate Data</Button>
+
+        {/* TODO: Speed control: <FormRange /> */}
       </div>
 
       <div className={styles.sortersContainer}>

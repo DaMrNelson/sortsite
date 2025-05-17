@@ -1,5 +1,11 @@
-.sorter {
+.content {
     padding: 1em;
+}
+
+.header {
+    text-align: center;
+    font-size: 3em;
+    color: #ffef66;
 }
 
 .controls {
