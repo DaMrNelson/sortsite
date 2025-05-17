@@ -5,6 +5,8 @@ Sorting visualized.
   - [X] StalinSort
   - [ ] MiracleSort
   - [ ] LiarSort
+  - [ ] CommunismSort
+  - [ ] CapitalismSort
   - [ ] Think of more!
 - [ ] Real sorts
   - [X] MergeSort

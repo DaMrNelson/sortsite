@@ -18,7 +18,7 @@ export const ACTION_COLOR_MAP: Record<SorterPromiseAction, string> = {
   "check-ok": "#00FF00",
   "check-bad": "#FF0000",
   "moved": "#0000FF",
-  "complete": "",
+  "complete": "#00FF00",
 }
 
 export type ExecutionState = {
@@ -132,6 +132,16 @@ export const next = async (sorter: Sorter, action: SorterPromiseAction, actionIn
     unhookedExecutionState.completedSorters.push(sorter);
     unhookedExecutionState.incompleteSorters.splice(unhookedExecutionState.incompleteSorters.indexOf(sorter), 1);
 
+    useExecutionState.setState((state) => ({
+      highlights: {
+        ...state.highlights,
+        [sorter.id]: {
+          groupedColor: ACTION_COLOR_MAP["complete"],
+          groupIndexStart: 0,
+        }
+      }
+    }));
+
     if (unhookedExecutionState.incompleteSorters.length === 0) {
       // TODO: Update state for all complete
       console.log("All completed!");
@@ -161,16 +171,19 @@ export const next = async (sorter: Sorter, action: SorterPromiseAction, actionIn
   // Schedule completion of this step for all promises if this was the last one resolved
   if (unhookedExecutionState.waitingPromises.length === unhookedExecutionState.incompleteSorters.length) {
     // Update displays for the action that was just taken
-    useExecutionState.setState({
-      highlights: Object.fromEntries(
-        unhookedExecutionState.waitingPromises
-          //.filter((wrapper) => wrapper.actionIndex !== undefined)
-          .map((wrapper) => ([
-            wrapper.sorter.id,
-            wrapper.highlightProps
-          ]))
-      )
-    });
+    useExecutionState.setState((state) => ({
+      highlights: {
+        ...state.highlights,
+        ...Object.fromEntries(
+          unhookedExecutionState.waitingPromises
+            //.filter((wrapper) => wrapper.actionIndex !== undefined)
+            .map((wrapper) => ([
+              wrapper.sorter.id,
+              wrapper.highlightProps
+            ]))
+        )
+      }
+    }));
 
     // Schedule next frame
     setTimeout(() => {

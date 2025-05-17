@@ -8,6 +8,7 @@ export abstract class Sorter {
   /** Highest index reached OK. Each sorter is responsible for setting this. This property is not hooked but is used. // TODO: Probably don't do that lol */
   record?: number;
   isRunning: boolean = false;
+  isComplete: boolean = false;
 
   constructor(data: number[]) {
     this.id = Symbol(this.constructor.name);
@@ -21,6 +22,7 @@ export abstract class Sorter {
 
     try {
       await this.run();
+      this.isComplete = true;
     } catch (err) {
       if (err === ERR_STOP_REQUESTED) {
         console.info("Stopped on user requested. Sorter:", this);

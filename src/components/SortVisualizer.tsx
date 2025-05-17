@@ -4,7 +4,7 @@ import { DataDisplay, DataDisplayContainer } from "./DataDisplay";
 import styles from "./SortVisualizer.module.css";
 
 export const SortVisualizer = ({ sorter }: { sorter: Sorter }) => {
-  const highlightProps = useExecutionState((state) => state.highlights[sorter.id]);
+  let highlightProps = useExecutionState((state) => state.highlights[sorter.id]);
   const dataSorted = useExecutionState((state) => state.dataSorted);
 
   return (
