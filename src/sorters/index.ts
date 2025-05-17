@@ -2,6 +2,7 @@ import { ERR_STOP_REQUESTED } from "../executor";
 
 export abstract class Sorter {
   abstract readonly NAME: string;
+  readonly DESCRIPTION?: string;
 
   id: symbol;
   data: number[];

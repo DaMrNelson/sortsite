@@ -10,6 +10,9 @@ import LiarSort from "./sorters/LiarSort";
 import MiracleSort from "./sorters/MiracleSort";
 import SleepSort from "./sorters/SleepSort";
 import SleepSortMS from "./sorters/SleepSortMS";
+import ThanosSort from "./sorters/ThanosSort";
+import EndgameSort from "./sorters/EndgameSort";
+//import GameOfSort from "./sorters/GameOfSort";
 
 export const RANDOM_COUNT = 100;
 //export const RANDOM_COUNT = 6;
@@ -21,7 +24,7 @@ export const ERR_STOP_REQUESTED = Symbol("Stop requested");
 export const ACTION_COLOR_MAP: Record<SorterPromiseAction, string> = {
   "check-ok": "#00FF00",
   "check-bad": "#FF0000",
-  "moved": "#0000FF",
+  "moved": "#3333FF",
   "complete": "#00FF00",
 }
 
@@ -51,6 +54,9 @@ export const useExecutionState = create<ExecutionState>()((set) => ({
     new MiracleSort(_initialData),
     new SleepSort(_initialData),
     new SleepSortMS(_initialData),
+    new ThanosSort(_initialData),
+    new EndgameSort(_initialData),
+    //new GameOfSort(_initialData),
   ],
   data: _initialData,
   dataSorted: [..._initialData].sort((a, b) => a - b),

@@ -15,6 +15,8 @@ Sorting visualized.
   - [ ] * GPTSort (ask ChatGPT to sort the list)
   - [ ] * BruteSort (try every combination. Like bogosort but ordered)
   - [ ] UnSort (make the data as statistically unsorted as possible)
+  - [X] * ThanosSort (remove half of the data at random until the list is sorted)
+  - [X] * EndgameSort (remove half of the data at random, but restore it between iterations)
   - [ ] Think of more!
 - [ ] Real sorts
   - [X] MergeSort
