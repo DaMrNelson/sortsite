@@ -35,9 +35,7 @@ export class BogoSort extends Sorter {
       // Randomize the list
       for (let i = 0; i < this.data.length; i++) {
         const replacedIndex = Math.floor(Math.random() * this.data.length);
-        const replaced = this.data[replacedIndex];
-        this.data[replacedIndex] = this.data[i];
-        this.data[i] = replaced;
+        [this.data[i], this.data[replacedIndex]] = [this.data[replacedIndex], this.data[i]];
       }
     }
   }
