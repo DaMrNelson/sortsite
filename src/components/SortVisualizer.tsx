@@ -9,7 +9,7 @@ export const SortVisualizer = ({ sorter }: { sorter: Sorter }) => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.title}>{sorter.constructor.name}</div>
+      <div className={styles.title}>{sorter.NAME}</div>
       <DataDisplayContainer>
         {dataSorted && <DataDisplay data={dataSorted} background />}
         {<DataDisplay data={sorter.data} record={sorter.record} {...highlightProps} />}

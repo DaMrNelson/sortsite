@@ -2,6 +2,8 @@ import { Sorter } from ".";
 import { next } from "../executor";
 
 export class BogoSort extends Sorter {
+  readonly NAME = "BogoSort";
+
   async run() {
     while (true) {
       // Check if the entire list is in order

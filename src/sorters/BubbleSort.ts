@@ -3,6 +3,8 @@ import { next } from "../executor";
 
 /** WOW this one sucks */
 export class BubbleSort extends Sorter {
+  readonly NAME = "BubbleSort";
+
   async run() {
     let moved = 0;
 

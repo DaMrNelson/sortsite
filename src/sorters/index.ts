@@ -1,6 +1,8 @@
 import { ERR_STOP_REQUESTED } from "../executor";
 
 export abstract class Sorter {
+  abstract readonly NAME: string;
+
   id: symbol;
   data: number[];
   /** Highest index reached OK. Each sorter is responsible for setting this. This property is not hooked but is used. // TODO: Probably don't do that lol */

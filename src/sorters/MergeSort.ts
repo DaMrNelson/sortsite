@@ -3,6 +3,8 @@ import { next } from "../executor";
 
 /** As seen on TikTok */
 export class MergeSort extends Sorter {
+  readonly NAME = "MergeSort";
+
   async run() {
     await this.mergeSort(0, this.data.length);
     await next(this, "complete");

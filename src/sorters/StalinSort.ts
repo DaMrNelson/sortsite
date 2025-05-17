@@ -3,6 +3,8 @@ import { next } from "../executor";
 
 /** As seen on TikTok */
 export class StalinSort extends Sorter {
+  readonly NAME = "StalinSort";
+
   async run() {
     // Go over list, removing any entries that aren't larger than the intended
     let highestVal = this.data[0];
