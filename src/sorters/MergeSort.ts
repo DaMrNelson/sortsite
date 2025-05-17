@@ -2,7 +2,7 @@ import { Sorter } from ".";
 import { next } from "../executor";
 
 /** As seen on TikTok */
-export class MergeSorter extends Sorter {
+export class MergeSort extends Sorter {
   async run() {
     await this.mergeSort(0, this.data.length);
     await next(this, "complete");
@@ -54,10 +54,10 @@ export class MergeSorter extends Sorter {
         break;
       }
 
-      await next(this, "check-ok", i);
+      await next(this, "check-ok", undefined, "check-ok", start, i + 1);
       i += 1;
     }
   }
 }
 
-export default MergeSorter;
+export default MergeSort;

@@ -2,7 +2,7 @@ import { Sorter } from ".";
 import { next } from "../executor";
 
 /** As seen on TikTok */
-export class StalinSorter extends Sorter {
+export class StalinSort extends Sorter {
   async run() {
     // Go over list, removing any entries that aren't larger than the intended
     let highestVal = this.data[0];
@@ -24,11 +24,11 @@ export class StalinSorter extends Sorter {
         i += 1;
       }
 
-      await next(this, "check-ok", i);
+      await next(this, "check-ok", undefined, "check-ok", 0, i);
     }
 
     await next(this, "complete");
   }
 }
 
-export default StalinSorter;
+export default StalinSort;

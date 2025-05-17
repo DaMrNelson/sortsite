@@ -4,8 +4,8 @@ import { SortVisualizer } from "./components/SortVisualizer";
 import { create, type StoreApi } from "zustand";
 import type { Sorter } from "./sorters";
 import { generateData, startExecution, stopExecution, unhookedExecutionState, useExecutionState } from "./executor";
-import BogoSorter from "./sorters/BogoSort";
-import StalinSorter from "./sorters/StalinSort";
+import BogoSort from "./sorters/BogoSort";
+import StalinSort from "./sorters/StalinSort";
 
 export const App = () => {
   const state = useExecutionState();
@@ -36,9 +36,9 @@ export const App = () => {
       </div>
 
       <div className={styles.sortersContainer}>
-        <SortVisualizer name="bogosort" sorter={state.sorters.bogo} />
-        <SortVisualizer name="stalinsort" sorter={state.sorters.stalin} />
-        <SortVisualizer name="mergesort" sorter={state.sorters.merge} />
+        {state.sorters.map((sorter) => (
+          <SortVisualizer key={sorter.constructor.name} sorter={sorter} />
+        ))}
       </div>
     </div>
   );

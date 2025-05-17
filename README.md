@@ -1,5 +1,23 @@
 # SortSite
 Sorting visualized.
+- [ ] Meme sorts
+  - [X] BogoSort
+  - [X] StalinSort
+  - [ ] MiracleSort
+  - [ ] LiarSort
+  - [ ] Think of more!
+- [ ] Real sorts
+  - [X] MergeSort
+  - [ ] InsertSort
+  - [ ] SelectSort
+  - [X] BubbleSort
+  - [ ] QuickSort
+  - [ ] TimeSort
+- [ ] Other TODO
+  - [ ] Improve back-end algo
+  - [ ] Satisfying sounds
+  - [ ] Allow ranges to be marked as OK (or < X?)
+  - [ ] Customize speed
 
 
 # React + TypeScript + Vite

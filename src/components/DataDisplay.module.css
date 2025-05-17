@@ -6,7 +6,15 @@
     border: 1px solid #AAA;
 }
 
-.container > * {
+.dbContainer.bg {
+    position: absolute;
+}
+
+.dpContainer > * {
     position: absolute;
     background: #FFF;
+}
+.dpContainer.bg > * {
+    background: transparent;
+    border-top: 1px solid #999;
 }

@@ -1,8 +1,10 @@
 import { create, type StoreApi } from "zustand";
 import type { Sorter } from "./sorters";
-import BogoSorter from "./sorters/BogoSort";
-import StalinSorter from "./sorters/StalinSort";
-import MergeSorter from "./sorters/MergeSort";
+import BogoSort from "./sorters/BogoSort";
+import StalinSort from "./sorters/StalinSort";
+import MergeSort from "./sorters/MergeSort";
+import BubbleSort from "./sorters/BubbleSort";
+import type { HighlightProps } from "./components/DataDisplay";
 
 export const RANDOM_COUNT = 100;
 //export const RANDOM_COUNT = 6;
@@ -14,10 +16,10 @@ export const ERR_STOP_REQUESTED = Symbol("Stop requested");
 export type ExecutionState = {
   running: boolean,
   stop: boolean,
-  sorters: Record<string, Sorter>,
+  sorters: Sorter[],
   data: number[],
   dataSorted: number[],
-  actionDisplays: {[sorterId: symbol]: { action: SorterPromiseAction, actionIndex: number }},
+  highlights: { [sorterId: symbol]: HighlightProps | undefined },
   set: StoreApi<ExecutionState>["setState"],
   setData: (data: number[]) => void,
 };
@@ -27,27 +29,24 @@ const _initialData = generateData();
 export const useExecutionState = create<ExecutionState>()((set) => ({
   running: false,
   stop: false,
-  sorters: {
-    bogo: new BogoSorter(_initialData),
-    stalin: new StalinSorter(_initialData),
-    merge: new MergeSorter(_initialData),
-  },
+  sorters: [
+    new BogoSort(_initialData),
+    new StalinSort(_initialData),
+    new MergeSort(_initialData),
+    new BubbleSort(_initialData),
+  ],
   data: _initialData,
   dataSorted: [..._initialData].sort((a, b) => a - b),
-  actionDisplays: {},
+  highlights: {},
   set: set,
   setData: (data) => {
     set((state) => ({
       data,
       dataSorted: [...data].sort((a, b) => a - b),
-      sorters: Object.fromEntries(
-        Object.entries(state.sorters).map(
-          // TODO: This seems hacky and typescript throws an error,
-          //       but I really don't love the idea of hooking around sorter.data.
-          //       Q: Other solutions?
-          ([k, v]) => [k, new v.constructor(data)],
-        )
-      ),
+      // TODO: This seems hacky and typescript throws an error,
+      //       but I really don't love the idea of hooking around sorter.data.
+      //       Q: Other solutions?
+      sorters: state.sorters.map((sorter) => new sorter.constructor(data)),
     }))
   }
 }));
@@ -70,9 +69,10 @@ export const startExecution = () => {
   }
 
   useExecutionState.setState({ running: true });
-  unhookedExecutionState.numSorters = Object.keys(state.sorters).length;
-  unhookedExecutionState.incompleteSorters = Array.from(Object.values(state.sorters));
+  unhookedExecutionState.numSorters = state.sorters.length;
+  unhookedExecutionState.incompleteSorters = [...state.sorters];
 
+  // Start sorter execution
   unhookedExecutionState.incompleteSorters.forEach((sorter) => sorter.run());
 };
 
@@ -85,7 +85,8 @@ export const stopExecution = () => {
 };
 
 export function generateData () {
-  return [...Array(RANDOM_COUNT)].map(() => Math.floor(Math.random() * (RANDOM_MAX - RANDOM_MIN) + RANDOM_MIN))
+  //return [...Array(RANDOM_COUNT)].map(() => Math.floor(Math.random() * (RANDOM_MAX - RANDOM_MIN) + RANDOM_MIN))
+  return [...Array(RANDOM_COUNT)].map(() => Math.random() * (RANDOM_MAX - RANDOM_MIN) + RANDOM_MIN)
 };
 
 class SorterPromiseWrapper {
@@ -94,24 +95,22 @@ class SorterPromiseWrapper {
   reject: any;
 
   sorter: Sorter;
-  action: SorterPromiseAction;
-  actionIndex?: number;
+  highlightProps?: HighlightProps;
 
-  constructor(sorter: Sorter, action: SorterPromiseAction, actionIndex?: number) {
+  constructor(sorter: Sorter, highlightProps?: HighlightProps) {
     this.promise = new Promise((resolve, reject) => {
       this.resolve = resolve;
       this.reject = reject;
     });
 
     this.sorter = sorter;
-    this.action = action;
-    this.actionIndex = actionIndex;
+    this.highlightProps = highlightProps;
   }
 }
 
 
 
-export const next = async (sorter: Sorter, action: SorterPromiseAction, actionIndex?: number) => {
+export const next = async (sorter: Sorter, action: SorterPromiseAction, actionIndex?: number, groupAction?: SorterPromiseAction, groupActionStart?: number, groupActionEnd?: number) => {
   let myPromise: SorterPromiseWrapper | null = null;
 
   // Add to promise wait list or complete
@@ -130,7 +129,40 @@ export const next = async (sorter: Sorter, action: SorterPromiseAction, actionIn
       return;
     }
   } else {
-    myPromise = new SorterPromiseWrapper(sorter, action, actionIndex)
+    // Build highlight props
+    const highlightProps: HighlightProps = {
+      // Action highlight (single index)
+      ...(action !== undefined ? {
+        focusedIndex: actionIndex,
+        focusedColor: (
+          (action === "check-ok") ?
+            "#00FF00"
+          : action === "check-bad" ?
+            "#FF0000"
+          : action === "moved" ?
+            "#0000FF"
+          :
+            ""
+        )
+      } : {}),
+
+      // Group highlight (multi-index)
+      ...(groupAction !== undefined ? {
+        groupIndexStart: groupActionStart,
+        groupIndexEnd: groupActionEnd,
+        groupedColor: (
+          groupAction === "check-ok" ?
+            "#00FF00"
+          : groupAction === "check-bad" ?
+            "#FF0000"
+          : groupAction === "moved" ?
+            "#0000FF"
+          :
+            ""
+        )
+      } : {}),
+    };
+    myPromise = new SorterPromiseWrapper(sorter, highlightProps)
     unhookedExecutionState.waitingPromises.push(myPromise);
   }
 
@@ -138,15 +170,12 @@ export const next = async (sorter: Sorter, action: SorterPromiseAction, actionIn
   if (unhookedExecutionState.waitingPromises.length === unhookedExecutionState.incompleteSorters.length) {
     // Update displays for the action that was just taken
     useExecutionState.setState({
-      actionDisplays: Object.fromEntries(
+      highlights: Object.fromEntries(
         unhookedExecutionState.waitingPromises
-          .filter((wrapper) => wrapper.actionIndex !== undefined)
+          //.filter((wrapper) => wrapper.actionIndex !== undefined)
           .map((wrapper) => ([
             wrapper.sorter.id,
-            {
-              action: wrapper.action,
-              actionIndex: wrapper.actionIndex,
-            }
+            wrapper.highlightProps
           ]))
       )
     });

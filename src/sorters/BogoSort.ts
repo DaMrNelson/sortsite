@@ -1,7 +1,7 @@
 import { Sorter } from ".";
 import { next } from "../executor";
 
-export class BogoSorter extends Sorter {
+export class BogoSort extends Sorter {
   async run() {
     while (true) {
       // Check if the entire list is in order
@@ -13,7 +13,7 @@ export class BogoSorter extends Sorter {
 
         if (val >= lastVal) {
           lastVal = val;
-          await next(this, "check-ok", i);
+          await next(this, "check-ok", undefined, "check-ok", 0, i);
         } else {
           allOk = false;
 
@@ -21,7 +21,7 @@ export class BogoSorter extends Sorter {
             this.record = i - 1; // TODO: Publish in next()?
           }
 
-          await next(this, "check-bad", i);
+          await next(this, "check-bad", i, "check-ok", 0, i - 1);
           break;
         }
       }
@@ -43,4 +43,4 @@ export class BogoSorter extends Sorter {
   }
 }
 
-export default BogoSorter;
+export default BogoSort;
