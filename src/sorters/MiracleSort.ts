@@ -32,8 +32,8 @@ export class MiracleSort extends Sorter {
       }
 
       // Wait a few cycles before checking again
-      for (let i = 0; i < Math.floor(100 + Math.random() * 100); i++) {
-        await next(fatalCheck!);
+      for (let i = 0; i < Math.floor(2000 + Math.random() * 100); i++) {
+        await next({ sorter: this, action: "check-bad" });
       }
     }
   }
